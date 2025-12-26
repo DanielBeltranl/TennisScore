@@ -31,29 +31,64 @@ npm run preview
 npx tsc --noEmit
 ```
 
-## Architecture
+## Folder Structure
 
-### Core Tennis Logic
-- `src/lib/tennis-rules.ts` - Scoring algorithms (points → games → sets, tiebreak logic)
-- `src/hooks/useTennisScore.ts` - State management hook for match scoring
+```
+/
+├── public/                 # Static files (icons, manifest.json for PWA)
+├── supabase/               # [BACKEND - Samuel]
+│   └── migrations/         # SQL files (001_init.sql, etc.)
+│
+├── src/
+│   ├── assets/             # Images, fonts
+│   │
+│   ├── components/         # [FRONTEND - Daniel]
+│   │   ├── ui/             # Reusable: Button, Card, Modal
+│   │   ├── match/          # Business: Scoreboard, PointButtons
+│   │   ├── config/         # MatchConfig form
+│   │   └── history/        # MatchHistory list
+│   │
+│   ├── context/            # [FRONTEND - Daniel]
+│   │   └── MatchContext.tsx
+│   │
+│   ├── hooks/              # [SHARED - Both]
+│   │   ├── useTennisScore.ts   # Local scoring logic
+│   │   ├── useSupabase.ts      # Database connection
+│   │   ├── useRealtime.ts      # Live updates
+│   │   └── useOffline.ts       # Offline sync
+│   │
+│   ├── lib/                # [BACKEND - Samuel]
+│   │   ├── supabase.ts         # Supabase client
+│   │   ├── tennis-rules.ts     # Scoring algorithms
+│   │   ├── constants.ts        # Game config (points, sets)
+│   │   └── utils.ts            # Helpers (ID generation, dates)
+│   │
+│   ├── pages/              # [FRONTEND - Daniel]
+│   │   ├── HomePage.tsx
+│   │   ├── NewMatchPage.tsx
+│   │   ├── ScoreboardPage.tsx
+│   │   ├── ViewMatchPage.tsx
+│   │   └── HistoryPage.tsx
+│   │
+│   ├── types/              # [SHARED - Both]
+│   │   └── index.ts            # Match, Set, Player interfaces
+│   │
+│   ├── App.tsx             # Route configuration
+│   └── main.tsx            # Entry point
+│
+└── .env                    # Supabase credentials
+```
 
-### Data Flow
-1. `MatchContext` provides global match state
-2. `useTennisScore` hook handles scoring logic locally
-3. `useSupabase` hook syncs with database
-4. `useRealtime` hook enables live spectator updates
+## Team Responsibilities
 
-### Key Components
-- `components/match/` - Scoreboard, PointButtons, SetDisplay
-- `components/config/` - MatchConfig form
-- `components/history/` - MatchHistory list
-
-### Pages
-- HomePage - Navigation entry point
-- NewMatchPage - Match configuration
-- ScoreboardPage - Active match scoring
-- ViewMatchPage - Read-only spectator view
-- HistoryPage - Past matches
+| Area | Owner | Key Files |
+|------|-------|-----------|
+| Database/SQL | Samuel | `supabase/migrations/`, `src/lib/supabase.ts` |
+| Tennis Logic | Samuel | `src/lib/tennis-rules.ts`, `src/lib/constants.ts` |
+| Type Definitions | Both | `src/types/index.ts` |
+| Hooks | Both | `src/hooks/` |
+| UI Components | Daniel | `src/components/` |
+| Pages | Daniel | `src/pages/` |
 
 ## Database Schema
 
@@ -72,7 +107,3 @@ VITE_SUPABASE_ANON_KEY=your_anon_key
 ## GitHub Project
 
 Task tracking: https://github.com/users/Samuelb1992/projects/1
-
-Issues are organized by development phase (1-8) and assigned to:
-- **DanielBeltranL**: Frontend tasks
-- **Samuelb1992**: Backend/database tasks

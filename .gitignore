@@ -1,1 +1,8 @@
 .env
+.env.local
+.mcp.json
+.claude/
+.gemini/
+.DS_Store
+node_modules/
+dist/
