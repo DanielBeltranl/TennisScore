@@ -11,6 +11,61 @@ TenisScore is a tennis scoring application designed to track match scores, maint
 - **Routing:** React Router DOM
 - **Deployment:** Vercel
 
+## Folder Structure
+
+```
+/
+├── public/                 # Static files (icons, manifest.json for PWA)
+├── supabase/
+│   └── migrations/         # SQL files (001_init.sql, etc.)
+│
+├── src/
+│   ├── assets/             # Images, fonts
+│   ├── components/
+│   │   ├── ui/             # Reusable: Button, Card, Modal
+│   │   ├── match/          # Business: Scoreboard, PointButtons
+│   │   ├── config/         # MatchConfig form
+│   │   └── history/        # MatchHistory list
+│   │
+│   ├── context/
+│   │   └── MatchContext.tsx
+│   │
+│   ├── hooks/
+│   │   ├── useTennisScore.ts   # Local scoring logic
+│   │   ├── useSupabase.ts      # Database connection
+│   │   ├── useRealtime.ts      # Live updates
+│   │   └── useOffline.ts       # Offline sync
+│   │
+│   ├── lib/
+│   │   ├── supabase.ts         # Supabase client
+│   │   ├── tennis-rules.ts     # Scoring algorithms
+│   │   ├── constants.ts        # Game config (points, sets)
+│   │   └── utils.ts            # Helpers (ID generation, dates)
+│   │
+│   ├── pages/
+│   │   ├── HomePage.tsx
+│   │   ├── NewMatchPage.tsx
+│   │   ├── ScoreboardPage.tsx
+│   │   ├── ViewMatchPage.tsx
+│   │   └── HistoryPage.tsx
+│   │
+│   ├── types/
+│   │   ├── index.ts            # App types: Match, Set, Player, Config
+│   │   └── database.ts         # Supabase auto-generated types
+│   │
+│   ├── App.tsx             # Route configuration
+│   └── main.tsx            # Entry point
+│
+└── .env                    # Supabase credentials
+```
+
+## Database Schema
+
+Three PostgreSQL tables in Supabase:
+- `matches` - Active match state (players, scores, config, share_code)
+- `players` - Player information (name, country, birthdate)
+- `sets` - Individual set scores per match
+
 ## Development Roadmap
 
 ### Phase 1: Setup & Local Scoreboard

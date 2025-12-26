@@ -71,7 +71,8 @@ npx tsc --noEmit
 │   │   └── HistoryPage.tsx
 │   │
 │   ├── types/              # [SHARED - Both]
-│   │   └── index.ts            # Match, Set, Player interfaces
+│   │   ├── index.ts            # App types: Match, Set, Player, Config
+│   │   └── database.ts         # Supabase auto-generated types
 │   │
 │   ├── App.tsx             # Route configuration
 │   └── main.tsx            # Entry point
@@ -85,7 +86,7 @@ npx tsc --noEmit
 |------|-------|-----------|
 | Database/SQL | Samuel | `supabase/migrations/`, `src/lib/supabase.ts` |
 | Tennis Logic | Samuel | `src/lib/tennis-rules.ts`, `src/lib/constants.ts` |
-| Type Definitions | Both | `src/types/index.ts` |
+| Type Definitions | Both | `src/types/index.ts`, `src/types/database.ts` |
 | Hooks | Both | `src/hooks/` |
 | UI Components | Daniel | `src/components/` |
 | Pages | Daniel | `src/pages/` |
@@ -94,8 +95,8 @@ npx tsc --noEmit
 
 Three PostgreSQL tables in Supabase:
 - `matches` - Active match state (players, scores, config, share_code)
+- `players` - Player information (name, country, birthdate)
 - `sets` - Individual set scores per match
-- `match_history` - Completed match summaries
 
 ## Environment Variables
 
