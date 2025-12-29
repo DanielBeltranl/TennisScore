@@ -13,7 +13,7 @@ TenisScore is a PWA tennis scoring application with real-time updates for specta
 - **Backend**: Supabase (PostgreSQL + Realtime)
 - **State**: React Context + custom hooks
 - **PWA**: vite-plugin-pwa + Workbox
-- **Deployment**: Vercel
+- **Deployment**: Vercel (or any static hosting / self-hosted)
 
 ## Commands
 
