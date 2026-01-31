@@ -1,90 +1,41 @@
-import ScoreUpButtomComponent from "../score-up-buttom.component/scoreUpButtom.component.tsx";
 import GameScoreNumberComponent from "../game-score-number.component/gameScoreNumber.component.tsx";
-import ScoreDownButtomComponent from "../score-down-button.component/scoreDownButton.component.tsx";
-import {useState} from "react";
+import {useReducer} from "react";
+import {ScoreButtomPackComponent} from "../Buttoms/ScoreButtoms/ScoreButtomPack.component.tsx";
+import {scoreReducer} from "../utils/scoreReducer.ts";
+import type {ScoreState} from "../score-interfaces/ScoreState.ts";
 
 export default function ScoreBoardComponent () {
 
-    //el useState le dice a react que este atento a los cambios de las variables que estan dentro del useState pa despues re-renderizarlas
-
-    const [rightScore, setRightScore] = useState<number>(0);
-    const [leftScore, setLeftScore] = useState<number>(0);
-
-    //funciones pa el lado derecho, debe haber una mejor manera, pero no supe como :C
-
-    const rightScoreCounterUpButtom = () => {
-       setRightScore(rightScore + 15);
-
-        if(rightScore === 30){
-            setRightScore(rightScore + 10)
-        }
-
-        if(rightScore === 40){
-            setRightScore(0)
-        }
-
+    const initialScoreState: ScoreState = {
+        playerOneScore: '0',
+        playerTwoScore: '0',
+        servingPlayer: 1,
+        gameEnded: false
     };
 
-    const rightScoredDownButton = () => {
-        setRightScore(rightScore - 15);
+    const [scoreState, dispatch] = useReducer(scoreReducer, initialScoreState );
 
-        if(rightScore === 40){
-            setRightScore(rightScore - 10)
-        }
-
-        if(rightScore === 0){
-            setRightScore(0)
-        }
-    };
-
-    const leftScoreCounterUpButtom = () => {
-        setLeftScore(leftScore + 15);
-
-        if(leftScore === 30){
-            setLeftScore(leftScore + 10)
-        }
-
-        if(leftScore === 40){
-            setLeftScore(0)
-        }
-    }
-
-    const leftScoreDownButton = () => {
-        setLeftScore(leftScore - 15);
-
-        if(leftScore === 40){
-            setLeftScore(leftScore - 10)
-        }
-
-        if (leftScore === 0){
-            setLeftScore(0)
-        }
-    }
+    const scoreStyles = "w-[clamp(150px,20vw,300px)] aspect-square text-[clamp(70px,12vw,210px)] font-bold flex items-center justify-center";
 
     return (
-        <div className="grid grid-cols-2 justify-items-center mt-20">
-
-            {/* lado izquierdo shamy */}
-
-            <div className="flex gap-6 items-center">
-            <div className="flex space flex-col gap-40">
-                <ScoreUpButtomComponent onClick={leftScoreCounterUpButtom}/>
-                <ScoreDownButtomComponent onClick={leftScoreDownButton}/>
+        <div className="grid grid-cols-[1fr_auto_1fr] items-center mt-20 w-full px-10 gap-10">
+            {/* Columna Izquierda: Botones */}
+            <ScoreButtomPackComponent onScoreUp={()=>dispatch({type: 'PLAYER_ONE_SCORE_UP'})} onScoreDown={()=> dispatch({type: 'PLAYER_ONE_SCORE_DOWN'})} className={"justify-self-end"}/>
+            {/* Indicadores de puntos */}
+            <div className="flex justify-center items-center gap-8 md:gap-20 lg:gap-32">
+                <GameScoreNumberComponent
+                    score={scoreState.playerOneScore}
+                    className={scoreStyles}
+                />
+                <GameScoreNumberComponent
+                    score={scoreState.playerTwoScore}
+                    className={scoreStyles}
+                />
             </div>
-            <GameScoreNumberComponent score={leftScore}/>
+            {/* Columna Derecha: Botones */}
+            <ScoreButtomPackComponent onScoreUp={()=> dispatch({type: 'PLAYER_TWO_SCORE_UP'}) } onScoreDown={()=> dispatch({type:'PLAYER_TWO_SCORE_DOWN'})} className={"justify-self-start"}/>
+
         </div>
-
-            {/* lado derecho bro, la unica diferencia es que dispongo los componentes al reves para que las propiedades de columna los ordene como en el mock */}
-
-            <div className="flex gap-6 items-center">
-        <GameScoreNumberComponent score={rightScore}/>
-        <div className="flex space flex-col gap-40">
-            <ScoreUpButtomComponent onClick={rightScoreCounterUpButtom}/>
-            <ScoreDownButtomComponent onClick={rightScoredDownButton}/>
-        </div>
-    </div>
-    </div>
-
 
     )
 }

@@ -1,9 +1,13 @@
 
+interface ScorePorps {
+    score: string
+    className?: string
+}
 
-export default function GameScoreNumberComponent ({ score }: { score: number }) {
+export default function GameScoreNumberComponent ({ score, className }: ScorePorps) {
     return (
-        <div className="flex items-center justify-center w-[421px] h-[405px] p-2 bg-purple-900 border-[10px] border-white rounded-2xl text-white">
-            <span className="text-[280px] leading-none font-bold flex items-center justify-center relative z-10">
+        <div className="flex items-center justify-center p-2 bg-purple-900 border-8 border-white rounded-2xl text-white">
+            <span className={` leading-none font-bold flex items-center justify-center relative z-10 ${className}`}>
                 {score}
             </span>
         </div>
