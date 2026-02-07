@@ -9,6 +9,7 @@ import {useGetSetsScore} from "../../../hooks/matchSessionContext/useGetSetsScor
 import type {SetData} from "../score-interfaces/match/SetData.ts";
 import {useUpdateSets} from "../../../hooks/matchSessionContext/useUpdateSets/useUpdateSets.ts";
 import {SetsScoreBoard} from "../setsScoreBoard/setsScoreBoard/setsScoreBoard.tsx";
+import { AnimatePresence } from "framer-motion";
 
 const initialScoreState: ScoreState = {
     playerOneScore: '0',
@@ -20,47 +21,56 @@ const initialScoreState: ScoreState = {
 };
 
 export default function ScoreBoardComponent () {
-
-    const [scoreState, dispatch] = useReducer(scoreReducer, initialScoreState );
-
-    const setsScore: SetData[] | null = useGetSetsScore()
-
+    const [scoreState, dispatch] = useReducer(scoreReducer, initialScoreState);
+    const setsScore: SetData[] | null = useGetSetsScore();
     const currentSetScore = setsScore ? setsScore[setsScore.length - 1] : null;
 
-    const {updateGameScore} = useUpdateGames()
+    const {updateGameScore} = useUpdateGames();
+    const {updateSets} = useUpdateSets();
 
     const gameEndHandler = () => {
         updateGameScore(scoreState);
         dispatch({type: 'RESET_SCORE'});
     }
 
-    const {updateSets} = useUpdateSets();
-
     const endSetHandler = () => {
-        updateSets()
+        updateSets();
         dispatch({type: 'RESET_SCORE'});
     }
 
-    return (
+    const isGameEnding = scoreState.gameEnded && !currentSetScore?.setWinner;
+    const isSetEnding = !!currentSetScore?.setWinner;
 
+    return (
         <div className="flex flex-col gap-10 items-center justify-center">
             <div className="grid grid-cols-[1fr_auto_1fr] items-center mt-20 w-full px-10 gap-10">
-                {/* Columna Izquierda: Botones */}
-                <ScoreButtomPackComponent onScoreUp={()=>dispatch({type: 'PLAYER_ONE_SCORE_UP'})} onScoreDown={()=> dispatch({type: 'PLAYER_ONE_SCORE_DOWN'})} className={"justify-self-end"}/>
-                {/* Indicadores de puntos */}
+                <ScoreButtomPackComponent
+                    onScoreUp={()=>dispatch({type: 'PLAYER_ONE_SCORE_UP'})}
+                    onScoreDown={()=> dispatch({type: 'PLAYER_ONE_SCORE_DOWN'})}
+                    className={"justify-self-end"}
+                />
                 <div className="flex justify-center items-center gap-8 md:gap-20 lg:gap-32">
-                    <GameScoreNumberComponent
-                        score={scoreState.playerOneScore}
-                    />
-                    <GameScoreNumberComponent
-                        score={scoreState.playerTwoScore}
-                    />
+                    <GameScoreNumberComponent score={scoreState.playerOneScore} />
+                    <GameScoreNumberComponent score={scoreState.playerTwoScore} />
                 </div>
-                {/* Columna Derecha: Botones */}
-                <ScoreButtomPackComponent onScoreUp={()=> dispatch({type: 'PLAYER_TWO_SCORE_UP'}) } onScoreDown={()=> dispatch({type:'PLAYER_TWO_SCORE_DOWN'})} className={"justify-self-start"}/>
+                <ScoreButtomPackComponent
+                    onScoreUp={()=> dispatch({type: 'PLAYER_TWO_SCORE_UP'}) }
+                    onScoreDown={()=> dispatch({type:'PLAYER_TWO_SCORE_DOWN'})}
+                    className={"justify-self-start"}
+                />
             </div>
-            {scoreState.gameEnded && !currentSetScore?.setWinner  && (<GameEnderButtom onClick={gameEndHandler} string={"Terminar juego"}/>)}
-            {currentSetScore?.setWinner && (<GameEnderButtom onClick={endSetHandler} string={"Terminar Set"}/>)}
+
+            <div className="h-16 flex items-center justify-center">
+                <AnimatePresence mode="wait">
+                    {isGameEnding && (
+                        <GameEnderButtom key="game-ender" onClick={gameEndHandler} string={"Terminar juego"}/>
+                    )}
+                    {isSetEnding && (
+                        <GameEnderButtom key="set-ender" onClick={endSetHandler} string={"Terminar Set"}/>
+                    )}
+                </AnimatePresence>
+                {!isGameEnding && !isSetEnding && <div className="h-10 w-40"></div>}
+            </div>
 
             <div>
                 <SetsScoreBoard/>
