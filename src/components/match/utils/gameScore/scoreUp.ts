@@ -1,4 +1,4 @@
-import type {ScoreState} from "../score-interfaces/ScoreState.ts";
+import type {ScoreState} from "../../score-interfaces/match/ScoreState.ts";
 
 
 const TENNIS_SCORES = ["0", "15", "30", "40", "AD"];
@@ -21,14 +21,16 @@ try {
                 GameEnded: false };
 
     }else if(pointScorer === "AD"){
-        return {PointScorerScore: "GAME",
+        return {PointScorerScore: "AD",
                 OpponentScore: "40",
-                GameEnded: true };
+                GameEnded: true,
+                winner: pointWinner};
 
     }else if(TENNIS_SCORES.indexOf(opponentScore)<3 && pointScorer === "40"){
         return {PointScorerScore: "40",
                 OpponentScore: opponentScore,
-                GameEnded: true };
+                GameEnded: true,
+                winner: pointWinner};
 
     }else if(pointScorer === "40" && opponentScore === "AD"){
         return {PointScorerScore: "40",
@@ -40,8 +42,8 @@ try {
                 OpponentScore: opponentScore,
                 GameEnded: false};
     }
-
 }catch(e){
     throw new Error("Error in scoreChanger function: " + e);
 }
+
 }

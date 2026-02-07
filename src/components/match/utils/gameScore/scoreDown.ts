@@ -1,4 +1,4 @@
-import type {ScoreState} from "../score-interfaces/ScoreState.ts";
+import type {ScoreState} from "../../score-interfaces/match/ScoreState.ts";
 
 const TENNIS_SCORES = ["0", "15", "30", "40", "AD"];
 
@@ -15,16 +15,23 @@ export const scoreDown = (scoreSate: ScoreState, playerAfected: number) => {
 
     try {
         if(affectedPlayerScore === "0"){
+
             return {affectedPlayerScore: "0",
-                    opponentScore: opponentScore};
+                    opponentScore: opponentScore
+                    ,gameEnded: false};
+
         }else if(affectedPlayerScore === "40" && opponentScore === "AD"){
             
             return {affectedPlayerScore: indexDown(affectedPlayerScore),
-                    opponentScore: indexDown(opponentScore)};
+                    opponentScore: indexDown(opponentScore),
+                    gameEnded: false};
             
         } else {
+
             return {affectedPlayerScore: indexDown(affectedPlayerScore),
-                opponentScore: opponentScore};
+                    opponentScore: opponentScore,
+                    gameEnded: false};
+
         }
     } catch (e) {
         throw new Error("Error in scoreDown function: " + e);

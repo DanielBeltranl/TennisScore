@@ -1,8 +1,5 @@
+import type {ButtomProps} from "../../score-interfaces/buttom-props.ts";
 
-interface ButtomProps{
-    onClick: () => void
-    className?: string
-}
 
 const buttonStyles = "w-[clamp(41px,5vw,82px)] aspect-square";
 

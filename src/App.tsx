@@ -1,14 +1,16 @@
 import {BrowserRouter} from "react-router";
 import AppRoutes from "./pages/routes.tsx";
+import {ScoreContextProvider} from "./context/scoreContext/scoreContextProvider.tsx";
 
 
 function App() {
 
   return (
-
-      <BrowserRouter>
-          <AppRoutes/>
-      </BrowserRouter>
+      <ScoreContextProvider>
+          <BrowserRouter>
+              <AppRoutes/>
+          </BrowserRouter>
+     </ScoreContextProvider>
 
   )
 }
