@@ -30,7 +30,6 @@ export const scoreReducer = (scoreState: ScoreState,  action: Action) =>{
                 gameWinner: result.winner
             }
         }
-
         case 'PLAYER_TWO_SCORE_UP': {
 
             const pointWinner = 2;
@@ -44,7 +43,6 @@ export const scoreReducer = (scoreState: ScoreState,  action: Action) =>{
                 gameWinner: result.winner
             }
         }
-
         case 'PLAYER_ONE_SCORE_DOWN': {
 
             const playerAfected = 1;
@@ -59,7 +57,6 @@ export const scoreReducer = (scoreState: ScoreState,  action: Action) =>{
 
                 }
         }
-
         case 'PLAYER_TWO_SCORE_DOWN': {
 
             const playerAfected = 2;

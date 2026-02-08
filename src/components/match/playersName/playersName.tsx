@@ -17,7 +17,7 @@ export const PlayersName = () => {
     };
 
     const boxNameStyle = "flex items-center px-4 bg-purple-900 w-[clamp(325px,30vw,650px)] h-[clamp(60px,30vw,120px)] border-2 border-amber-50 rounded-lg";
-    const playerNameStyle = "text-[clamp(24px,10vw,48px)] text-amber-50 leading-none";
+    const playerNameStyle = "text-[clamp(25px,10vw,50px)] text-amber-50 leading-none font-bold";
 
     return (
         <div className="flex flex-col ">

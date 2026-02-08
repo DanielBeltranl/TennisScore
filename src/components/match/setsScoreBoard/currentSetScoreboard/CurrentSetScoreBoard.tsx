@@ -1,22 +1,47 @@
-import {useGetSetsScore} from "../../../../hooks/matchSessionContext/useGetSetsScore/useGetSetsScore.ts";
-import type {SetData} from "../../score-interfaces/match/SetData.ts";
+import { motion } from "framer-motion";
+import { useGetSetsScore } from "../../../../hooks/matchSessionContext/useGetSetsScore/useGetSetsScore.ts";
 
 export const CurrentSetsScoreBoard = () => {
+    const scoreSets = useGetSetsScore();
+    const currentSetIndex = scoreSets ? scoreSets.length : 0;
+    const currentSetScore = scoreSets ? scoreSets[scoreSets.length - 1] : null;
 
-    const scoreSets =  useGetSetsScore();
-
-    const style = "flex items-center justify-center bg-amber-50 w-[clamp(60px,20vw,120px)] h-[clamp(60px,20vw,120px)] rounded-lg text-[clamp(45px,20vw,90px)] bg-purple-700 border-2 border-white text-amber-50 "
-
-    const currentSetScore: SetData | null = scoreSets ? scoreSets[scoreSets.length - 1] : null;
+    const style = "flex items-center justify-center w-[clamp(60px,20vw,120px)] h-[clamp(60px,20vw,120px)] rounded-lg text-[clamp(45px,20vw,90px)] font-bold bg-purple-700 border-2 text-amber-50 relative overflow-hidden";
 
     return (
-        <div className="flex-col justify-center">
-            <div className={`${style} bg-purple-700 border-2 border-white text-amber-50`}>
-                {currentSetScore?.playerOneGames}
-            </div>
-            <div className={`${style} border-2 border-black`}>
-                {currentSetScore?.playerTwoGames}
-            </div>
+        <div className="overflow-hidden">
+            <motion.div
+                key={currentSetIndex}
+                initial={{ x: "-105%" }}
+                animate={{ x: 0 }}
+                transition={{
+                    duration: 0.6,
+                    ease: "easeInOut"
+                }}
+                className="flex flex-col justify-center"
+            >
+                <div className={`${style} border-white`}>
+                    <motion.span
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.5, duration: 0.4 }}
+                        className="relative z-20"
+                    >
+                        {currentSetScore?.playerOneGames}
+                    </motion.span>
+                </div>
+
+                <div className={`${style} border-white`}>
+                    <motion.span
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.5, duration: 0.4 }}
+                        className="relative z-20"
+                    >
+                        {currentSetScore?.playerTwoGames}
+                    </motion.span>
+                </div>
+            </motion.div>
         </div>
     );
 };
