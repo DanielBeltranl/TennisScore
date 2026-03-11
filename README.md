@@ -173,4 +173,4 @@ sets     → set_number, t1_games, t2_games, tiebreak_points por partido
 
 ## Seguimiento de tareas
 
-[GitHub Project Board](https://github.com/users/Samuelb1992/projects/1)
+[GitHub Project Board](https://github.com/DanielBeltranl/TennisScore)
