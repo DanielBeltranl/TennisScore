@@ -1,4 +1,4 @@
-import type {ScoreState} from "../../score-interfaces/match/ScoreState.ts";
+import type {ScoreState} from "../../../../score-interfaces/match/ScoreState.ts";
 
 
 const TENNIS_SCORES = ["0", "15", "30", "40", "AD"];
@@ -12,6 +12,7 @@ export const scoreUpper = (scoreState:ScoreState, pointWinner: number ) =>{
 
 const pointScorer = pointWinner === 1 ? scoreState.playerOneScore : scoreState.playerTwoScore;
 const opponentScore = pointWinner === 1 ? scoreState.playerTwoScore : scoreState.playerOneScore;
+
 
 try {
     if(pointScorer === "40" && opponentScore === "40"){

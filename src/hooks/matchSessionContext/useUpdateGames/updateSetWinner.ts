@@ -11,6 +11,8 @@ export const updateSetWinner = (currentSet: SetData): SetData => {
         currentSet.setWinner= 1
     }else if(currentSet.playerTwoGames ===7 && currentSet.playerOneGames ===5){
         currentSet.setWinner= 2
+    }else if (currentSet.playerTwoGames === 6 && currentSet.playerOneGames === 6) {
+        currentSet.tiebreak = true;
     }
 
     return currentSet

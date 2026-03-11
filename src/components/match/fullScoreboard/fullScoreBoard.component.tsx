@@ -9,7 +9,7 @@ import type { SetData } from "../score-interfaces/match/SetData.ts";
 import { useUpdateSets } from "../../../hooks/matchSessionContext/useUpdateSets/useUpdateSets.ts";
 import { SetsScoreBoard } from "../setsScoreBoard/setsScoreBoard/setsScoreBoard.tsx";
 import { AnimatePresence } from "framer-motion";
-import { GameScoreBoard } from "../game-score-number.component/gameSocreBoard/gameScoreBoard.tsx";
+import { GameScoreBoard } from "../gameScoreBoard.component/gameScoreBoard/gameScoreBoard.tsx";
 
 const initialScoreState: ScoreState = {
     playerOneScore: '0',
@@ -20,7 +20,7 @@ const initialScoreState: ScoreState = {
     breakPLayerTwo: false,
 };
 
-export default function ScoreBoardComponent() {
+export default function FullScoreBoardComponent() {
     const [scoreState, dispatch] = useReducer(scoreReducer, initialScoreState);
     const setsScore: SetData[] | null = useGetSetsScore();
     const currentSetScore = setsScore ? setsScore[setsScore.length - 1] : null;
@@ -37,8 +37,15 @@ export default function ScoreBoardComponent() {
         updateSets();
     }
 
-    const isGameEnding = scoreState.gameEnded && !currentSetScore?.setWinner;
+    const endTiebreakHandler = () => {
+        updateGameScore(scoreState);
+        updateSets();
+        dispatch({ type: 'RESET_SCORE' });
+    }
+
+    const isGameEnding = scoreState.gameEnded && !currentSetScore?.setWinner && !currentSetScore?.tiebreak;
     const isSetEnding = !!currentSetScore?.setWinner;
+    const isTiebreak = currentSetScore?.tiebreak && scoreState.gameEnded;
 
     return (
         <div className="flex flex-col w-full pb-10">
@@ -46,11 +53,11 @@ export default function ScoreBoardComponent() {
 
                     <div className="flex justify-end">
                         <AnimatePresence>
-                        {!currentSetScore?.setWinner ? (
+                        {!currentSetScore?.setWinner && !isTiebreak ? (
                             <ScoreButtomPackComponent
                                 key="pack2"
-                                onScoreUp={() => dispatch({ type: 'PLAYER_ONE_SCORE_UP' })}
-                                onScoreDown={() => dispatch({ type: 'PLAYER_ONE_SCORE_DOWN' })}
+                                onScoreUp={() => dispatch({ type: 'PLAYER_ONE_SCORE_UP', payload: currentSetScore?.tiebreak })}
+                                onScoreDown={() => dispatch({ type: 'PLAYER_ONE_SCORE_DOWN', payload: currentSetScore?.tiebreak })}
                             />
                         ) : (
                             <div className="w-20 h-10" aria-hidden="true" />
@@ -63,11 +70,11 @@ export default function ScoreBoardComponent() {
 
                     <div className="flex justify-start">
                         <AnimatePresence>
-                            {!currentSetScore?.setWinner ? (
+                            {!currentSetScore?.setWinner && !isTiebreak ? (
                                 <ScoreButtomPackComponent
                                     key="pack1"
-                                    onScoreUp={() => dispatch({ type: 'PLAYER_TWO_SCORE_UP' })}
-                                    onScoreDown={() => dispatch({ type: 'PLAYER_TWO_SCORE_DOWN' })}
+                                    onScoreUp={() => dispatch({ type: 'PLAYER_TWO_SCORE_UP', payload: currentSetScore?.tiebreak })}
+                                    onScoreDown={() => dispatch({ type: 'PLAYER_TWO_SCORE_DOWN', payload: currentSetScore?.tiebreak })}
                                 />
                             ) : (
                                 <div className="w-20 h-10" aria-hidden="true" />
@@ -77,7 +84,6 @@ export default function ScoreBoardComponent() {
 
             </div>
 
-
             <div className="h-16 flex items-center justify-center mt-10">
                 <AnimatePresence mode="wait">
                     {isGameEnding && (
@@ -86,8 +92,10 @@ export default function ScoreBoardComponent() {
                     {isSetEnding && (
                         <GameEnderButtom key="set-ender" onClick={endSetHandler} string={"Terminar Set"} />
                     )}
+                    {isTiebreak &&
+                        (<GameEnderButtom onClick={endTiebreakHandler} string={"Terminar TieBreak"}/>)}
                 </AnimatePresence>
-                {!isGameEnding && !isSetEnding && <div className="h-10 w-40"></div>}
+                {!isGameEnding && !isSetEnding && !isTiebreak && <div className="h-10 w-40"></div>}
             </div>
 
             <div className="flex justify-center w-full px-10 mt-5">

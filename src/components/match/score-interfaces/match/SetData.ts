@@ -6,5 +6,5 @@ export interface SetData {
     playerTwoGames: number
     gameHistory: ScoreState[]
     setWinner?: number
-    //duration?:TimeRanges // to be defined
+    tiebreak?: boolean
 }

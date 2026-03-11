@@ -1,4 +1,4 @@
-import type {ScoreState} from "../../score-interfaces/match/ScoreState.ts";
+import type {ScoreState} from "../../../../score-interfaces/match/ScoreState.ts";
 
 const TENNIS_SCORES = ["0", "15", "30", "40", "AD"];
 

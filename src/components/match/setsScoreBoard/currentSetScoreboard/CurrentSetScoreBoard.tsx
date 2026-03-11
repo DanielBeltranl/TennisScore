@@ -6,7 +6,7 @@ export const CurrentSetsScoreBoard = () => {
     const currentSetIndex = scoreSets ? scoreSets.length : 0;
     const currentSetScore = scoreSets ? scoreSets[scoreSets.length - 1] : null;
 
-    const style = "flex items-center justify-center w-[clamp(60px,20vw,120px)] h-[clamp(60px,20vw,120px)] rounded-lg text-[clamp(45px,20vw,90px)] font-bold bg-purple-700 border-2 text-amber-50 relative overflow-hidden";
+    const style = "flex items-center justify-center w-[clamp(60px,20vw,120px)] h-[clamp(60px,20vw,120px)]  text-[clamp(45px,20vw,90px)] font-bold bg-purple-700 border-2 text-amber-50 relative overflow-hidden";
 
     return (
         <div className="overflow-hidden">
